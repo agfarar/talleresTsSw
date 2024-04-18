@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;tp_2/src/tp2Lexer&apos; to &apos;tp2Lexer.gold&apos;" description="Rename resource &apos;tp2Lexer&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/tp2Lexer" name="tp2Lexer.gold" stamp="1697674499730" updateReferences="true"/>&#x0A;<refactoring accessors="true" comment="Delete element from project &apos;tp_2&apos;&#x0A;- Original project: &apos;tp_2&apos;&#x0A;- Original element: &apos;tp2Lexer.gold&apos;" description="Delete element" element1="src/tp2Lexer.gold" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="1" stamp="1697684574756" subPackages="false" version="1.0"/>
-</session>
