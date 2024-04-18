@@ -1,0 +1,207 @@
+using gold.**
+
+toSet(C) :=  {x|  x in C}
+
+///====   mini Parser===
+
+function createParser(A):IPushdownAutomaton begin
+	Q:= (0‥40)
+	
+	Σ:= toSet(A)  ∪ {' ', '\n','{'}
+	
+	Γ:={'{'}
+	q₀:=0
+	F:= {0}
+	M:=GPushdownAutomaton(Q,Σ,Γ,q₀,F)
+SkipChars := {' ', 't', '\n'}   // this will  the parser as the lexer removes  SkipChars
+
+//BLOCK OF CODE
+
+M.delta(10,7,'{').push("{")
+M.delta(0,7,'{').push("{")
+
+
+//PROCEDURE CALL
+
+M.delta(7,31,'i').ignore()
+M.delta(31,33,'(').ignore()
+
+M.delta(33,34,'i').ignore()
+M.delta(33,34,'#').ignore()
+
+M.delta(34,33,',').ignore()
+
+M.delta(34,35,'i').ignore()
+M.delta(34,35,'#').ignore()
+
+M.delta(35,6,')').ignore()
+
+//PROCEDURE
+
+M.delta(0,1,'R').ignore()
+M.delta(1,2,'i').ignore()
+
+M.delta(2,3,'(').ignore()
+
+//Procedure Arguments
+
+M.delta(3,4,'i').ignore()
+
+M.delta(4,3,',').ignore()
+M.delta(4,5,'i').ignore()
+
+M.delta(3,10,')').ignore()
+M.delta(5,10,')').ignore()
+
+//Procedure connection to block of code
+
+
+//DefVar
+
+M.delta(0,1,'V').ignore()
+M.delta(2,3,'i').ignore()
+M.delta(2,3,'#').ignore()
+M.delta(3,10,';').ignore()
+
+//IND INSTRUCTIONS
+
+//JUMP
+
+M.delta(7,1,'j').ignore()
+
+M.delta(3,2,',').ignore()
+
+//WALK
+
+M.delta(7,1,'w').ignore()
+M.delta(1,2,'(').ignore()
+
+M.delta(2,3,'i').ignore()
+M.delta(2,3,'#').ignore()
+
+M.delta(3,4,',').ignore()
+
+
+M.delta(4,5,'O').ignore()
+M.delta(4,5,'D').ignore()
+
+//Completion basic instructions
+
+M.delta(3,6,')').ignore()
+
+M.delta(5,6,')').ignore()
+
+
+M.delta(6,7,';').ignore()//punto y coma
+
+M.delta(6,20,'}').pop("{")
+
+M.delta(20,1,'R').ignore()
+
+
+M.delta(20,7,'{').push("{")
+
+// Falta ponerle defProc
+
+M.delta(20,0,λ).ignore()
+
+M.delta(20,7,';').ignore()
+
+M.delta(20,20,'}').pop("{")
+
+//M.delta(21,,λ).ignore()
+
+//M.delta(21,0,λ).ignore()
+
+//LEAP
+
+M.delta(7,1,'P').ignore()
+
+//TURN
+
+M.delta(7,1,'t').ignore()
+M.delta(2,3,'D').ignore()
+
+
+//TURNTO
+
+M.delta(7,1,'T').ignore()
+
+M.delta(2,3,'O').ignore()
+
+
+//DROP
+
+M.delta(7,1,'d').ignore()
+
+//GET
+
+M.delta(7,1,'E').ignore()
+
+//GRAB
+
+M.delta(7,1,'B').ignore()
+
+//LETGO
+
+M.delta(7,1,'G').ignore()
+
+//NOP
+
+M.delta(7,1,'o').ignore()
+M.delta(2,6,')').ignore() //modify this
+
+//CONTROL STRUCTURE
+
+// IF
+M.delta(7,13,'I').ignore()
+M.delta(20,10,'L').ignore()
+
+// WHILE
+	
+M.delta(7,13,'h').ignore()
+
+//REPEAT
+
+M.delta(7,27,'a').ignore()
+M.delta(27,28,'#').ignore()
+M.delta(28,10,'m').ignore()
+
+
+//CONDITION
+
+//facing
+
+M.delta(13,14,'C').ignore()
+M.delta(14,15,'(').ignore()
+
+M.delta(15,16,'O').ignore()
+M.delta(16,10,')').ignore()
+
+//can
+
+M.delta(13,17,'A').ignore()
+M.delta(17,7,'(').ignore()
+M.delta(6,10,')').ignore()
+
+//not
+
+M.delta(13,19,'N').ignore()
+M.delta(19,13,':').ignore()
+
+//CALL PROCEDURE
+
+
+
+
+
+ for each q in Q do
+ 	for each s in SkipChars do
+ 	   M.delta(q,q,λ+s).ignore()
+ end
+ end
+
+
+return M
+end
+
